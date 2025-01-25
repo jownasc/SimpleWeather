@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #6dd5fa, #2980b9);
+      color: #fff;
+    }
+
+    .weather-container {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    .weather-container h1 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .weather-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .weather-details {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .weather-details img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .day-night {
+      font-size: 2rem;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="weather-container">
+    <h1>Weather App</h1>
+    <input type="text" id="cityInput" placeholder="Enter city name" />
+    <div class="weather-details">
+      <div id="cityName">--</div>
+      <div id="temperature">--</div>
+      <div id="condition">--</div>
+      <div id="dayNightImage" class="day-night">--</div>
+      <img id="weatherIcon" src="" alt="" />
+    </div>
+  </div>
+</body>
+</html>
