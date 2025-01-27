@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App</title>
+  <title>Simple Weather</title>
   <style>
     body {
       display: flex;
@@ -12,60 +12,170 @@
       height: 100vh;
       margin: 0;
       font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #6dd5fa, #2980b9);
-      color: #fff;
+      background: #e0f7fa;
     }
 
-    .weather-container {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      text-align: center;
+    #container {
       width: 300px;
     }
 
-    .weather-container h1 {
-      font-size: 1.5rem;
-      margin-bottom: 10px;
+    #header {
+      text-align: center;
+      width: 103%;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      color: #0277bd;
+      font-size: 1.5em;
+      font-weight: bold;
     }
 
-    .weather-container input {
+    #weatherDisplay {
       width: 100%;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    input#cityInput {
+      width: 70%;
       padding: 10px;
       margin-bottom: 20px;
+      border: 1px solid #b2ebf2;
+      border-radius: 5px;
+      outline: none;
+      font-size: 14px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    input#cityInput:focus {
+      border-color: #0288d1;
+    }
+
+    button#searchButton {
+      padding: 10px 15px;
+      margin-left: 5px;
       border: none;
       border-radius: 5px;
+      background: #0288d1;
+      color: #ffffff;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
     }
 
-    .weather-details {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    button#searchButton:hover {
+      background: #0277bd;
     }
 
-    .weather-details img {
-      width: 50px;
-      height: 50px;
+    #cityName, #temperature, #condition, #dayNightEmoji {
+      display: none;
     }
 
-    .day-night {
-      font-size: 2rem;
-      margin: 10px 0;
+    #cityName {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #01579b;
+    }
+
+    #temperature {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      color: #0277bd;
+    }
+
+    #condition {
+      font-size: 1em;
+      color: #4fc3f7;
+      margin-bottom: 20px;
+    }
+
+    #dayNightEmoji {
+      font-size: 2em;
     }
   </style>
 </head>
 <body>
-  <div class="weather-container">
-    <h1>Weather App</h1>
-    <input type="text" id="cityInput" placeholder="Enter city name" />
-    <div class="weather-details">
-      <div id="cityName">--</div>
-      <div id="temperature">--</div>
-      <div id="condition">--</div>
-      <div id="dayNightImage" class="day-night">--</div>
-      <img id="weatherIcon" src="" alt="" />
+  <div id="container">
+    <div id="header">Simple Weather</div>
+    <div id="weatherDisplay">
+      <input id="cityInput" type="text" placeholder="Enter city name" />
+      <button id="searchButton">Search</button>
+      <div id="weatherDetails">
+        <h2 id="cityName"></h2>
+        <p id="temperature"></p>
+        <p id="condition"></p>
+        <p id="dayNightEmoji"></p>
+      </div>
     </div>
   </div>
+  <script>
+    const cityInput = document.querySelector("#cityInput");
+    const searchButton = document.querySelector("#searchButton");
+    const cityName = document.querySelector("#cityName");
+    const temperature = document.querySelector("#temperature");
+    const condition = document.querySelector("#condition");
+    const dayNightEmoji = document.querySelector("#dayNightEmoji");
+
+    const handleSearch = async () => {
+      const city = cityInput.value.trim();
+      if (!city) return;
+
+      const cityDetails = await searchCity(city);
+      if (!cityDetails) return;
+
+      const weatherDetails = await getWeather(cityDetails.Key);
+      if (!weatherDetails) return;
+
+      cityName.textContent = cityDetails.LocalizedName;
+      temperature.textContent = `${weatherDetails.Temperature.Metric.Value}°C`;
+      condition.textContent = weatherDetails.WeatherText;
+      dayNightEmoji.textContent = weatherDetails.IsDayTime ? "☀️" : "🌙";
+
+      cityName.style.display = "block";
+      temperature.style.display = "block";
+      condition.style.display = "block";
+      dayNightEmoji.style.display = "block";
+    };
+
+    cityInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") handleSearch();
+    });
+
+    searchButton.addEventListener("click", handleSearch);
+
+    const apiKey = "yGl3SRNlOCD1fUnGPPBCfuIu9AdZQk6n";
+    const baseUrl = "https://dataservice.accuweather.com";
+    const searchEndpoint = "/locations/v1/cities/search";
+    const weatherEndpoint = "/currentconditions/v1/";
+
+    const searchCity = async (city) => {
+      try {
+        const response = await fetch(`${baseUrl}${searchEndpoint}?apikey=${apiKey}&q=${city}`);
+        if (!response.ok) throw new Error("City not found");
+        const data = await response.json();
+        return data[0];
+      } catch (error) {
+        alert("City not found. Please try again.");
+      }
+    };
+
+    const getWeather = async (locationKey) => {
+      try {
+        const response = await fetch(`${baseUrl}${weatherEndpoint}${locationKey}?apikey=${apiKey}`);
+        if (!response.ok) throw new Error("Weather data not found");
+        const data = await response.json();
+        return data[0];
+      } catch (error) {
+        alert("Unable to fetch weather data.");
+      }
+    };
+  </script>
 </body>
 </html>

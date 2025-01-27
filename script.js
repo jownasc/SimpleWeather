@@ -38,14 +38,12 @@ document.querySelector("#cityInput").addEventListener("keypress", async (e) => {
     const weatherDetails = await getWeather(cityDetails.Key);
     if (!weatherDetails) return;
 
+    // Update the DOM with the weather data
     document.querySelector("#cityName").textContent = cityDetails.LocalizedName;
     document.querySelector("#temperature").textContent = `${weatherDetails.Temperature.Metric.Value}°C`;
     document.querySelector("#condition").textContent = weatherDetails.WeatherText;
 
-    const isDayTime = weatherDetails.IsDayTime;
-    document.querySelector("#dayNightImage").textContent = isDayTime ? "☀️" : "🌙";
-    const weatherIconUrl = `https://developer.accuweather.com/sites/default/files/${String(weatherDetails.WeatherIcon).padStart(2, '0')}-s.png`;
-    document.querySelector("#weatherIcon").src = weatherIconUrl;
-    document.querySelector("#weatherIcon").alt = weatherDetails.WeatherText;
+    // Display day or night emoji
+    document.querySelector("#dayNightEmoji").textContent = weatherDetails.IsDayTime ? "☀️" : "🌙";
   }
 });
