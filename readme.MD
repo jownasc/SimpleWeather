@@ -15,7 +15,7 @@ Este é um aplicativo web simples e elegante para consultar as condições clim�
 - **API da AccuWeather**: Fonte confiável para dados climáticos em tempo real.
 
 ## Visual do Projeto
-![Interface do Simple Weather](./images/1.png)
+![Interface do Simple Weather](https://raw.githubusercontent.com/jownasc/simple-weather-app/main/images/1.png)
 
 ### Olá, sou o Jonathan! 👋
 
@@ -24,4 +24,3 @@ Engenheiro de Software com foco em desenvolvimento back-end e front-end, usando 
 [LinkedIn 💼](https://www.linkedin.com/in/jonathannascimentodelima/)  
 [GitHub 🌐](https://github.com/jownasc/)  
 [Email 📬](mailto:jonathan_nasc@hotmail.com)
-
