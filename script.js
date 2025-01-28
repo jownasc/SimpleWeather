@@ -1,7 +1,38 @@
+const cityInput = document.querySelector("#cityInput");
+const searchButton = document.querySelector("#searchButton");
+const cityName = document.querySelector("#cityName");
+const temperature = document.querySelector("#temperature");
+const condition = document.querySelector("#condition");
+const dayNightEmoji = document.querySelector("#dayNightEmoji");
+const historyList = document.querySelector("#historyList");
+
 const apiKey = "yGl3SRNlOCD1fUnGPPBCfuIu9AdZQk6n";
 const baseUrl = "https://dataservice.accuweather.com";
 const searchEndpoint = "/locations/v1/cities/search";
 const weatherEndpoint = "/currentconditions/v1/";
+
+const handleSearch = async () => {
+  const city = cityInput.value.trim();
+  if (!city) return;
+
+  const cityDetails = await searchCity(city);
+  if (!cityDetails) return;
+
+  const weatherDetails = await getWeather(cityDetails.Key);
+  if (!weatherDetails) return;
+
+  cityName.textContent = cityDetails.LocalizedName;
+  temperature.textContent = `${weatherDetails.Temperature.Metric.Value}°C`;
+  condition.textContent = weatherDetails.WeatherText;
+  dayNightEmoji.textContent = weatherDetails.IsDayTime ? "☀️" : "🌙";
+
+  cityName.style.display = "block";
+  temperature.style.display = "block";
+  condition.style.display = "block";
+  dayNightEmoji.style.display = "block";
+
+  addToHistory(cityDetails.LocalizedName);
+};
 
 const searchCity = async (city) => {
   try {
@@ -10,7 +41,6 @@ const searchCity = async (city) => {
     const data = await response.json();
     return data[0];
   } catch (error) {
-    console.error("Error fetching city:", error);
     alert("City not found. Please try again.");
   }
 };
@@ -22,28 +52,18 @@ const getWeather = async (locationKey) => {
     const data = await response.json();
     return data[0];
   } catch (error) {
-    console.error("Error fetching weather:", error);
     alert("Unable to fetch weather data.");
   }
 };
 
-document.querySelector("#cityInput").addEventListener("keypress", async (e) => {
-  if (e.key === "Enter") {
-    const city = e.target.value.trim();
-    if (!city) return;
+const addToHistory = (city) => {
+  const listItem = document.createElement("li");
+  listItem.textContent = city;
+  historyList.appendChild(listItem);
+};
 
-    const cityDetails = await searchCity(city);
-    if (!cityDetails) return;
-
-    const weatherDetails = await getWeather(cityDetails.Key);
-    if (!weatherDetails) return;
-
-    // Update the DOM with the weather data
-    document.querySelector("#cityName").textContent = cityDetails.LocalizedName;
-    document.querySelector("#temperature").textContent = `${weatherDetails.Temperature.Metric.Value}°C`;
-    document.querySelector("#condition").textContent = weatherDetails.WeatherText;
-
-    // Display day or night emoji
-    document.querySelector("#dayNightEmoji").textContent = weatherDetails.IsDayTime ? "☀️" : "🌙";
-  }
+cityInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") handleSearch();
 });
+
+searchButton.addEventListener("click", handleSearch);

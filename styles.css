@@ -5,11 +5,41 @@ body {
     height: 100vh;
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f3f4f6;
+    background: #e0f7fa;
   }
   
-  #weatherDisplay {
+  #container {
     width: 300px;
+  }
+  
+  #header {
+    text-align: center;
+    width: 103%;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    color: #0277bd;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #01579b;
+    text-align: center;
+  }
+  
+  #weatherDisplay,
+  #historyBox {
+    width: 100%;
     padding: 20px;
     background: #ffffff;
     border-radius: 15px;
@@ -17,37 +47,75 @@ body {
     text-align: center;
   }
   
-  input#cityInput {
-    width: 80%;
+  #weatherDetails h2,
+  #weatherDetails p {
+    margin: 10px 0;
+  }
+  
+  #historyList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #historyList li {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #0277bd;
+  }
+  
+  #cityInput {
+    width: 70%;
     padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #d1d5db;
+    margin-bottom: 10px;
+    border: 1px solid #b2ebf2;
     border-radius: 5px;
     outline: none;
     font-size: 14px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  
+  #cityInput:focus {
+    border-color: #0288d1;
+  }
+  
+  button#searchButton {
+    padding: 10px 15px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 5px;
+    background: #0288d1;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button#searchButton:hover {
+    background: #0277bd;
   }
   
   #cityName {
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #01579b;
   }
   
   #temperature {
     font-size: 1.2em;
     margin-bottom: 10px;
+    color: #0277bd;
   }
   
   #condition {
     font-size: 1em;
-    color: #6b7280;
+    color: #4fc3f7;
     margin-bottom: 20px;
   }
   
-  #dayNightImage,
-  #weatherIcon {
-    width: 50px;
-    height: 50px;
-    margin: 5px;
+  #dayNightEmoji {
+    font-size: 2em;
   }
   
